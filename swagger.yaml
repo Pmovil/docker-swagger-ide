@@ -18,6 +18,6 @@ paths:
                 type: string
             example:
               teste: 1234
-              teste2: "sdfsdf"
+              teste2: "sdfsdff"
           description:  Describe the 200 response in more detail
           

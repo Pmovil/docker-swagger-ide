@@ -45,7 +45,7 @@ app.use('/editor/spec', function(req, res){
 
 app.use('/editor', express.static(path.join(__dirname, 'node_modules/swagger-editor')));
 
-middleware(specfile, app, function(err, middleware) {
+middleware(specfile, app, function(err, middleware, api) {
     // Add all the Swagger Express Middleware, or just the ones you need.
     // NOTE: Some of these accept optional options (omitted here for brevity)
     app.use(
@@ -57,6 +57,17 @@ middleware(specfile, app, function(err, middleware) {
         middleware.mock()
     );
 
+    fs.watch(specfile, {}, function(){
+        middleware.init(specfile, function(err){
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('mudado');
+            }
+        });
+    });
+    
+
     var server = app.listen(process.env.PORT || 8080, function () {
         var host = server.address().address
         var port = server.address().port
@@ -64,5 +75,6 @@ middleware(specfile, app, function(err, middleware) {
         console.log("Example app listening at http://%s:%s", host, port)
      });
 });
+
 
 
