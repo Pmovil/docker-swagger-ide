@@ -1,0 +1,23 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: minimal
+  description: Example of the bare minimum Swagger spec
+host: localhost:8080
+paths:
+  /users:
+    get:
+      responses:
+        "200":
+          schema:
+            type: object
+            properties: 
+              teste:
+                type: integer
+              test2:
+                type: string
+            example:
+              teste: 1234
+              teste2: "sdfsdf"
+          description:  Describe the 200 response in more detail
+          
