@@ -2,17 +2,24 @@
   "name": "docker-swagger-ide",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.15.4",
+    "fs-extra": "^4.0.1",
     "json-schema-resolve-allof": "^1.1.4",
     "swagger-editor": "^2.10.5",
     "swagger-express-middleware": "^1.0.0-alpha.12",
     "swagger-parser": "^3.4.2"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.5.0"
   }
 }

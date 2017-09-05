@@ -1,7 +1,7 @@
 const path = require('path');
 var express = require('express');
 var app = express();
-var fs = require('fs');
+var fs = require('fs-extra');
 var middleware = require('swagger-express-middleware');
 
 var specfile = path.join(__dirname, 'swagger.yaml');
@@ -9,16 +9,14 @@ var specfile = path.join(__dirname, 'swagger.yaml');
 process.on('SIGINT', function() { console.log('Caught Ctrl+C...'); process.exit(); }); // Ctrl+C
 process.on('SIGTERM', function() { console.log('Caught kill...'); process.exit(); }); // docker stop
 
-app.get('/', function (req, res) {
-   res.send('Hello World');
-});
-
+//Using fixed default.json
 app.use('/editor/config/defaults.json', express.static(path.join(__dirname, 'config/defaults.json')));
 
+//Setting backend
 app.use('/editor/spec', function(req, res){
 
     if (!fs.existsSync(specfile)) {
-        fs.writeFileSync(specfile, '');
+        fs.copySync(specfile + '.min', specfile);
     }
 
     if (req.method === 'GET' || req.method === 'HEAD') {
@@ -78,3 +76,4 @@ middleware(specfile, app, function(err, middleware, api) {
 
 
 
+module.exports = app

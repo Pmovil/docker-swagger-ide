@@ -9,15 +9,5 @@ paths:
     get:
       responses:
         "200":
-          schema:
-            type: object
-            properties: 
-              teste:
-                type: integer
-              test2:
-                type: string
-            example:
-              teste: 1234
-              teste2: "sdfsdff"
           description:  Describe the 200 response in more detail
           
