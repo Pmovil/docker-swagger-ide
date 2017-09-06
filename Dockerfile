@@ -12,7 +12,7 @@ EXPOSE 8080
 
 VOLUME ["/app/specs"]
 
-COPY app.js deref.js /app/
+COPY app.js deref.js swagger.yaml.min /app/
 COPY specs/ /app/specs/
 COPY config/ /app/config/
 

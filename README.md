@@ -13,7 +13,7 @@
 2. Run docker-swagger-ide with a shared specs folder and port:
 
     ``` sh
-	$ docker run -v $(pwd):/app/specs -p 8080:8080 --rm pmovil/docker-swagger-ide run
+	$ docker run -v $(pwd):/app/specs -p 8080:8080 --rm pmovil/docker-swagger-ide
     ```
 
 3. Go to  http://127.0.0.1:8080/editor
