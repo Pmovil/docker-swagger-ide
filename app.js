@@ -18,7 +18,7 @@ process.on('SIGTERM', function() {
 }); // docker stop
 
 if (!fs.existsSync(specfile)) {
-    fs.copySync(specfile + '.min', specfile);
+    fs.copySync(__dirname + '/swagger.yaml.min', specfile);
 }
 
 

@@ -1,0 +1,26 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: minimal
+  description: Example of the bare minimum Swagger spec with example
+paths:
+  /users:
+    get:
+      responses:
+        "200":
+          description:  Describe the 200 response in more detail
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                surname:
+                  type: string
+            example:
+              - name: Happy
+                surname: User
+              - name: Other
+                surname: Happy User
+          
