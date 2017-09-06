@@ -1,3 +1,5 @@
+'use strict';
+
 var SwaggerParser = require('swagger-parser');
 var resolveAllOf = require('json-schema-resolve-allof');
 
@@ -5,20 +7,20 @@ var resolveAllOf = require('json-schema-resolve-allof');
 SwaggerParser.dereference("./swagger.yaml")
     .then(function (api) {
 
-    delete api.definitions;
+        delete api.definitions;
 
-    var result;
-    var ops = ['get','put', 'post', 'delete', 'options', 'head', 'patch'];
+        var result;
+        var ops = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch'];
 
-    result = resolveAllOf(api);
-    result = resolveAllOf(result);
+        result = resolveAllOf(api);
+        result = resolveAllOf(result);
 
-                    for(var path in result.paths){
-                        for(var op in result.paths[path]){
-				if(ops.indexOf(op) > -1)
-                                   result.paths[path][op]['tags'] = ['veek-app'];
-                        }
-                    }
+        for (var path in result.paths) {
+            for (var op in result.paths[path]) {
+                if (ops.indexOf(op) > -1)
+                    result.paths[path][op].tags = ['veek-app'];
+            }
+        }
 
-    console.log(JSON.stringify(result, null, '\t'));
-});
+        console.log(JSON.stringify(result, null, '\t'));
+    });

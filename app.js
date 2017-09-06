@@ -1,13 +1,26 @@
-const path = require('path');
+'use strict';
+
+var path = require('path');
 var express = require('express');
 var app = express();
 var fs = require('fs-extra');
 var middleware = require('swagger-express-middleware');
 
-var specfile = path.join(__dirname, 'swagger.yaml');
+var specfile = path.join(__dirname, 'specs/swagger.yaml');
 
-process.on('SIGINT', function() { console.log('Caught Ctrl+C...'); process.exit(); }); // Ctrl+C
-process.on('SIGTERM', function() { console.log('Caught kill...'); process.exit(); }); // docker stop
+process.on('SIGINT', function() {
+    console.log('Caught Ctrl+C...');
+    process.exit();
+}); // Ctrl+C
+process.on('SIGTERM', function() {
+    console.log('Caught kill...');
+    process.exit();
+}); // docker stop
+
+if (!fs.existsSync(specfile)) {
+    fs.copySync(specfile + '.min', specfile);
+}
+
 
 //Using fixed default.json
 app.use('/editor/config/defaults.json', express.static(path.join(__dirname, 'config/defaults.json')));
@@ -15,9 +28,6 @@ app.use('/editor/config/defaults.json', express.static(path.join(__dirname, 'con
 //Setting backend
 app.use('/editor/spec', function(req, res){
 
-    if (!fs.existsSync(specfile)) {
-        fs.copySync(specfile + '.min', specfile);
-    }
 
     if (req.method === 'GET' || req.method === 'HEAD') {
         // Serve the file
@@ -43,9 +53,12 @@ app.use('/editor/spec', function(req, res){
 
 app.use('/editor', express.static(path.join(__dirname, 'node_modules/swagger-editor')));
 
+app.use(express.static(path.join(__dirname, 'specs/')));
+
 middleware(specfile, app, function(err, middleware, api) {
     // Add all the Swagger Express Middleware, or just the ones you need.
     // NOTE: Some of these accept optional options (omitted here for brevity)
+    
     app.use(
         middleware.metadata(),
         middleware.CORS(),
@@ -59,21 +72,19 @@ middleware(specfile, app, function(err, middleware, api) {
         middleware.init(specfile, function(err){
             if (err) {
                 console.log(err);
-            } else {
-                console.log('mudado');
             }
         });
     });
     
 
     var server = app.listen(process.env.PORT || 8080, function () {
-        var host = server.address().address
-        var port = server.address().port
+        var host = server.address().address;
+        var port = server.address().port;
         
-        console.log("Example app listening at http://%s:%s", host, port)
+        console.log("Example app listening at http://%s:%s", host, port);
      });
 });
 
 
 
-module.exports = app
+module.exports = app;
