@@ -5,8 +5,11 @@ var express = require('express');
 var app = express();
 var fs = require('fs-extra');
 var middleware = require('swagger-express-middleware');
+var SwaggerParser = require('swagger-parser');
+
 
 var specfile = path.join(__dirname, 'specs/swagger.yaml');
+var mtime;
 
 process.on('SIGINT', function() {
     console.log('Caught Ctrl+C...');
@@ -20,6 +23,8 @@ process.on('SIGTERM', function() {
 if (!fs.existsSync(specfile)) {
     fs.copySync(__dirname + '/swagger.yaml.min', specfile);
 }
+
+mtime = fs.statSync(specfile).mtime.getTime();
 
 
 //Using fixed default.json
@@ -68,11 +73,24 @@ middleware(specfile, app, function(err, middleware, api) {
         middleware.mock()
     );
 
-    fs.watch(specfile, {}, function(){
-        middleware.init(specfile, function(err){
-            if (err) {
-                console.log(err);
-            }
+    fs.watch(specfile, {}, function(eventType){
+        fs.stat(specfile, function(err, stats){
+            console.log(stats.mtime+'/'+mtime+"\n");
+            if(stats.mtime.getTime() != mtime){
+                mtime = stats.mtime.getTime();
+                console.log(`event type is: ${eventType}`);
+                SwaggerParser.validate(specfile)
+                .then(function (api) {
+                    middleware.init(specfile, function(err){
+                        if (err) {
+                            console.log(err);
+                        }
+                    })
+                })
+                .catch(function(err) {
+                    console.error('Onoes! The API is invalid. ' + err.message);
+                });
+            }         
         });
     });
     
