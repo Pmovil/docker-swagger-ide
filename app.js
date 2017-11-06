@@ -60,6 +60,10 @@ app.use('/editor', express.static(path.join(__dirname, 'node_modules/swagger-edi
 
 app.use(express.static(path.join(__dirname, 'specs/')));
 
+if (fs.existsSync('./extra-routes')) {
+     require('./extra-routes')(app);
+}
+
 middleware(specfile, app, function(err, middleware, api) {
     // Add all the Swagger Express Middleware, or just the ones you need.
     // NOTE: Some of these accept optional options (omitted here for brevity)
