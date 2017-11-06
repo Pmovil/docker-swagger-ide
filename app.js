@@ -60,7 +60,7 @@ app.use('/editor', express.static(path.join(__dirname, 'node_modules/swagger-edi
 
 app.use(express.static(path.join(__dirname, 'specs/')));
 
-if (fs.existsSync('./extra-routes')) {
+if (fs.existsSync('./extra-routes.js')) {
      require('./extra-routes')(app);
 }
 
