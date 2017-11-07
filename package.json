@@ -12,10 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.2",
+    "express-oauth-server": "^2.0.0",
     "fs-extra": "^4.0.2",
     "json-schema-resolve-allof": "^1.2.0",
     "multer": "^1.3.0",
-    "oauth2-server": "^3.0.0",
     "swagger-editor": "^2.10.5",
     "swagger-express-middleware": "^1.0.0-alpha.12",
     "swagger-parser": "^3.4.2"
